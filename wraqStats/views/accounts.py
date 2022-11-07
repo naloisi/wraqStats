@@ -1,10 +1,10 @@
 """
-Insta485 account view.
+wraqStats account view.
 URLs include:
 /
 """
 import flask
-import insta485
+import wraqStats
 import uuid
 import hashlib
 import pathlib
@@ -32,7 +32,7 @@ def login_helper():
     password_db_string = password_hasher(password)
     
     # connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     passwordCheck = connection.execute(
         "SELECT username "
         "FROM users "
@@ -59,7 +59,7 @@ def create_helper():
     
     filename = fileobj.filename
 
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     userCheck = connection.execute(
         "SELECT username "
         "FROM users "
@@ -77,7 +77,7 @@ def create_helper():
     uuid_basename = f"{stem}{suffix}"
     
     # TODO: Nathan Save Files to disk: user filename
-    path = insta485.app.config["UPLOAD_FOLDER"]/uuid_basename
+    path = wraqStats.app.config["UPLOAD_FOLDER"]/uuid_basename
     fileobj.save(path)
 
     userCheck = connection.execute(
@@ -94,7 +94,7 @@ def delete_helper():
         flask.abort(403)
 
     # connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     deleteFiles = connection.execute(
         "SELECT filename "
         "FROM posts "
@@ -105,7 +105,7 @@ def delete_helper():
 
     # TODO: Nathan delete files (users posts) from disk
     for file in deleteFiles:
-        path = insta485.app.config["UPLOAD_FOLDER"]/file["filename"]
+        path = wraqStats.app.config["UPLOAD_FOLDER"]/file["filename"]
         os.remove(path)
 
     deleteFiles = connection.execute(
@@ -117,7 +117,7 @@ def delete_helper():
     deleteFiles = deleteFiles.fetchall()
 
     # TODO: Nathan delete files (user prof pic) from disk
-    path = insta485.app.config["UPLOAD_FOLDER"]/deleteFiles[0]["filename"]
+    path = wraqStats.app.config["UPLOAD_FOLDER"]/deleteFiles[0]["filename"]
     os.remove(path)
 
     # removes correlated entries in the database
@@ -150,7 +150,7 @@ def edit_helper():
         filename = fileobj.filename
 
     # connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
 
     if newImage:
         # retreive and delete photo from filesystem
@@ -163,7 +163,7 @@ def edit_helper():
         deleteFiles = deleteFiles.fetchall()
 
         # TODO: Nathan delete file (user old pic)
-        path = insta485.app.config["UPLOAD_FOLDER"]/deleteFiles[0]["filename"]
+        path = wraqStats.app.config["UPLOAD_FOLDER"]/deleteFiles[0]["filename"]
         os.remove(path)
 
         stem = uuid.uuid4().hex
@@ -171,7 +171,7 @@ def edit_helper():
         uuid_basename = f"{stem}{suffix}"
 
         # TODO: upload new file pls (new user pic)
-        path = insta485.app.config["UPLOAD_FOLDER"]/uuid_basename
+        path = wraqStats.app.config["UPLOAD_FOLDER"]/uuid_basename
         fileobj.save(path)
         
         updateDB = connection.execute(
@@ -203,7 +203,7 @@ def editpass_helper():
     
     # verify current password 
     # connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     passCheck = connection.execute(
         "SELECT password "
         "FROM users "
@@ -232,7 +232,7 @@ def editpass_helper():
         (new_pass_db, flask.session['logname'], )
     )
 
-@insta485.app.route('/accounts/login/')
+@wraqStats.app.route('/accounts/login/')
 def acc_login():
     """Display /acounts/login/ route."""
 
@@ -243,7 +243,7 @@ def acc_login():
         context = {}
         return flask.render_template("acclogin.html", **context)
 
-@insta485.app.route('/accounts/create/')
+@wraqStats.app.route('/accounts/create/')
 def acc_create():
     """Display /acounts/login/ route."""
 
@@ -254,7 +254,7 @@ def acc_create():
     context = {}
     return flask.render_template("acccreate.html", **context)
 
-@insta485.app.route('/accounts/delete/')
+@wraqStats.app.route('/accounts/delete/')
 def acc_delete():
     """Display /acounts/login/ route."""
 
@@ -263,12 +263,12 @@ def acc_delete():
     context = {"logname": flask.session['logname']}
     return flask.render_template("accdelete.html", **context)
 
-@insta485.app.route('/accounts/edit/')
+@wraqStats.app.route('/accounts/edit/')
 def acc_edit():
     """Display /acounts/login/ route."""
 
     # TODO: Check to see if user is logged in
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     imgCheck = connection.execute(
         "SELECT filename "
         "FROM users "
@@ -281,7 +281,7 @@ def acc_edit():
     context = {"logname": flask.session['logname'], "user_img_url": imgCheck[0]['filename']}
     return flask.render_template("accedit.html", **context)
 
-@insta485.app.route('/accounts/password/')
+@wraqStats.app.route('/accounts/password/')
 def acc_password():
     """Display /acounts/login/ route."""
 
@@ -290,7 +290,7 @@ def acc_password():
     context = {"logname": flask.session['logname']}
     return flask.render_template("accpassword.html", **context)
 
-@insta485.app.route('/accounts/', methods=['POST'])
+@wraqStats.app.route('/accounts/', methods=['POST'])
 def acc_postreq():
     queryParams = flask.request.args
     returnURL = queryParams.get("target")
@@ -311,7 +311,7 @@ def acc_postreq():
     # redirect to target URL
     return flask.redirect(returnURL, code=302)
 
-@insta485.app.route('/accounts/logout/', methods=['POST'])
+@wraqStats.app.route('/accounts/logout/', methods=['POST'])
 def acc_logout():
     # TODO: Check to see if user is logged in
     flask.session.pop('logname', None)

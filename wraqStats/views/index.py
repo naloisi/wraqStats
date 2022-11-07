@@ -1,17 +1,17 @@
 """
-Insta485 index (main) view.
+wraqStats index (main) view.
 URLs include:
 /
 """
 import flask
 import arrow
-import insta485
-@insta485.app.route('/')
+import wraqStats
+@wraqStats.app.route('/')
 def show_index():
     """Display / route."""
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
 
     logname = "awdeorio"
     
@@ -111,6 +111,6 @@ def show_index():
     context = {"logname": logname, "posts": posts}
     return flask.render_template("index.html", **context)
 
-@insta485.app.route('/uploads/<img_url>')
+@wraqStats.app.route('/uploads/<img_url>')
 def get_photo(img_url):
-    return flask.send_from_directory(insta485.app.config['UPLOAD_FOLDER'], img_url)
+    return flask.send_from_directory(wraqStats.app.config['UPLOAD_FOLDER'], img_url)

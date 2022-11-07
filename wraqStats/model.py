@@ -1,7 +1,7 @@
-"""Insta485 model (database) API."""
+"""wraqStats model (database) API."""
 import sqlite3
 import flask
-import insta485
+import wraqStats
 def dict_factory(cursor, row):
     """Convert database row objects to a dictionary keyed on column name.
     This is useful for building dictionaries which are then used to render a
@@ -14,14 +14,14 @@ def get_db():
     https://flask.palletsprojects.com/en/1.0.x/appcontext/#storing-data
     """
     if 'sqlite_db' not in flask.g:
-        db_filename = insta485.app.config['DATABASE_FILENAME']
+        db_filename = wraqStats.app.config['DATABASE_FILENAME']
         flask.g.sqlite_db = sqlite3.connect(str(db_filename))
         flask.g.sqlite_db.row_factory = dict_factory
         # Foreign keys have to be enabled per-connection.  This is an sqlite3
         # backwards compatibility thing.
         flask.g.sqlite_db.execute("PRAGMA foreign_keys = ON")
     return flask.g.sqlite_db
-@insta485.app.teardown_appcontext
+@wraqStats.app.teardown_appcontext
 def close_db(error):
     """Close the database at the end of a request.
     Flask docs:

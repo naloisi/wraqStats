@@ -1,15 +1,15 @@
 """
-Insta485 index (main) view.
+wraqStats index (main) view.
 URLs include:
 /
 """
 
 import flask
-import insta485
+import wraqStats
 import uuid
 import pathlib
 import os
-@insta485.app.route("/likes/", methods=['POST'])
+@wraqStats.app.route("/likes/", methods=['POST'])
 def post_like():
     queryParams = flask.request.args
     returnURL = queryParams.get("target")
@@ -20,7 +20,7 @@ def post_like():
     postid = flask.request.form["postid"]
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     check = connection.execute(
         "SELECT likeid "
         "FROM likes "
@@ -57,9 +57,9 @@ def post_like():
     # print(opType)
     return flask.redirect(returnURL, code=302)
 
-@insta485.app.route("/comments/", methods=['POST'])
+@wraqStats.app.route("/comments/", methods=['POST'])
 def post_comment():
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     logname = "awdeorio"
     returnURL = flask.request.args
     returnURL = returnURL.get("target")
@@ -94,9 +94,9 @@ def post_comment():
         return flask.redirect("/")
     return flask.redirect(returnURL, code=302)
 
-@insta485.app.route("/posts/", methods=['POST'])
+@wraqStats.app.route("/posts/", methods=['POST'])
 def post_post():
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     logname = "awdeorio"
     returnURL = flask.request.args
     returnURL = returnURL.get("target")
@@ -114,7 +114,7 @@ def post_post():
         suffix = pathlib.Path(filename).suffix
         uuid_basename = f"{stem}{suffix}"
         # Save to disk
-        path = insta485.app.config["UPLOAD_FOLDER"]/uuid_basename
+        path = wraqStats.app.config["UPLOAD_FOLDER"]/uuid_basename
         fileobj.save(path)
         posting = connection.execute(
             "INSERT INTO posts(filename, owner) "
@@ -135,7 +135,7 @@ def post_post():
             (postid, )
         )
         delete_file = delete_file.fetchall()
-        path = insta485.app.config["UPLOAD_FOLDER"]/delete_file[0]["filename"]
+        path = wraqStats.app.config["UPLOAD_FOLDER"]/delete_file[0]["filename"]
         os.remove(path)
 
     if returnURL == "":
@@ -143,7 +143,7 @@ def post_post():
     
     return flask.redirect(returnURL, code=302)
 
-@insta485.app.route("/following/", methods=['POST'])
+@wraqStats.app.route("/following/", methods=['POST'])
 def follow_request():
     queryParams = flask.request.args
     returnURL = queryParams.get("target")
@@ -154,7 +154,7 @@ def follow_request():
     username = flask.request.form["username"]
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     check = connection.execute(
         "SELECT username2 "
         "FROM following "

@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/static/css/style.css">
-    <title>insta485</title>
+    <title>wraqStats</title>
 </head>
 <body>
-    <!-- Insta485 Header -->
+    <!-- wraqStats Header -->
     <div>
         <a href="/"><img src="/static/images/insta_logo.png" alt="Home" style="width:50px;height:50px;"></a>
         <a href="/explore/">explore</a>
         <a href="/users/{{ logname }}/">{{ logname }}</a>
     </div>
     {% for post in posts %}
-    <!-- Insta485 Post {{ post.postid }} -->
+    <!-- wraqStats Post {{ post.postid }} -->
     <div class="feed-post">
         <div class="feed-header">
             <a href="/users/{{ post.owner }}/"><img src="/uploads/{{ post.owner_img_url }}" alt="{{ post.owner }}"></a>

@@ -1,16 +1,16 @@
 """
-Insta485 index (main) view.
+wraqStats index (main) view.
 URLs include:
 /
 """
 import flask
-import insta485
-@insta485.app.route('/testhello')
+import wraqStats
+@wraqStats.app.route('/testhello')
 def show_hello():
     """Display /testhello route."""
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     # Query database
     logname = "awdeorio"
     cur = connection.execute(

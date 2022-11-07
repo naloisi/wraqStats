@@ -1,5 +1,5 @@
 """
-Insta485 user (main) view.
+wraqStats user (main) view.
 URLs include:
 /users/<user_url_slug>/
 /users/<user_url_slug>/followers/
@@ -7,14 +7,14 @@ URLs include:
 """
 import flask
 import arrow
-import insta485
+import wraqStats
 
-@insta485.app.route('/users/<user_url_slug>/')
+@wraqStats.app.route('/users/<user_url_slug>/')
 def show_user(user_url_slug):
     """Display /users/<user_url_slug>/followers/ route."""
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
 
     logname = "awdeorio"
     fullname = ""
@@ -84,12 +84,12 @@ def show_user(user_url_slug):
 
     return flask.render_template("user.html", **context)
 
-@insta485.app.route('/users/<user_url_slug>/followers/')
+@wraqStats.app.route('/users/<user_url_slug>/followers/')
 def show_followers(user_url_slug):
     """Display /users/<user_url_slug>/followers/ route."""
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
 
     logname = "awdeorio"
 
@@ -135,12 +135,12 @@ def show_followers(user_url_slug):
     context = {"logname": logname, "followers": followers}
     return flask.render_template("followers.html", **context)
 
-@insta485.app.route('/users/<user_url_slug>/following/')
+@wraqStats.app.route('/users/<user_url_slug>/following/')
 def show_following(user_url_slug):
     """Display /users/<user_url_slug>/following/ route."""
 
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
 
     logname = "awdeorio"
 

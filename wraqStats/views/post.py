@@ -1,18 +1,18 @@
 """
-Insta485 index (main) view.
+wraqStats index (main) view.
 URLs include:
 /
 """
 import flask
-import insta485
+import wraqStats
 import arrow
-@insta485.app.route("/posts/<postid_url_slug>/")
+@wraqStats.app.route("/posts/<postid_url_slug>/")
 def show_posts(postid_url_slug):
     """Display posts route."""
     # Need: logname, owner (of the post), owner_img_url, postid, img_url,
     # timestamp, comments, comment.owner
     # Connect to database
-    connection = insta485.model.get_db()
+    connection = wraqStats.model.get_db()
     # Query database
     logname = "awdeorio"
     post = connection.execute(
