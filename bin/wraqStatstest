@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# insta485test
+#
+# Stop on errors, print commands
+set -Eeuo pipefail
+set -x
+
+# Check Python code style
+pycodestyle wraqStats
+# Check Python docstring conventions
+pydocstyle wraqStats
+# Check Python static code analyzer
+pylint --disable=cyclic-import --unsafe-load-any-extension=y wraqStats
+# Run all Python unit tests
+pytest -v tests

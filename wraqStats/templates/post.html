@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>insta485</title>
+</head>
+
+<body>
+    <!-- Insta485 Header -->
+    <div>
+        <a href="/"><img src="/static/images/insta_logo.png" alt="Home" style="width:50px;height:50px;"></a>
+        <a href="/explore/">explore</a>
+        <a href="/users/{{ logname }}/">{{ logname }}</a>
+    </div>
+    <!-- Post -->
+    <div class="feed-post">
+        <div class="feed-header">
+            <a href="/users/{{ owner }}/"><img src="/uploads/{{ owner_img_url }}" alt="{{ owner }}"></a>
+            <a href="/users/{{ owner }}/">
+                <h2>{{ owner }}</h2>
+            </a>
+            <a href="/posts/{{ postid }}/">
+                <p>{{ timestamp }}</p>
+            </a>
+        </div>
+        <div class="feed-photo">
+            <img src="/uploads/{{ img_url }}" alt="{{ owner }}">
+        </div>
+        <div class="feed-meta">
+            {% if likes == 1 %}
+            <p>{{ likes }} like</p>
+            {% else %}
+            <p>{{ likes }} likes</p>
+            {% endif %}
+            {% for comment in comments %}
+            <p>
+                <span>
+                    <a href="/users/{{ comment.owner }}/"><b>{{ comment.owner }}</b></a>
+                    {{ comment.text }}
+                </span>
+                {% if logname == comment.owner %}
+                  <form action="/comments/?target=/posts/{{ postid }}/" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="operation" value="delete"/>
+                    <input type="hidden" name="commentid" value="{{ comment.commentid }}"/>
+                    <input type="submit" name="uncomment" value="delete"/>
+                  </form>
+                {% endif %}
+            </p>
+            {% endfor %}
+            {% if userHasLiked %}
+            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+            <form action="/likes/?target=/posts/{{ postid }}/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="unlike" />
+                <input type="hidden" name="postid" value="{{ postid }}" />
+                <input type="submit" name="unlike" value="unlike" />
+            </form>
+            {% else %}
+            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+            <form action="/likes/?target=/posts/{{ postid }}/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="like" />
+                <input type="hidden" name="postid" value="{{ postid }}" />
+                <input type="submit" name="like" value="like" />
+            </form>
+            {% endif %}
+            <form action="/comments/?target=/posts/{{ postid }}/" method="post"
+                enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="create" />
+                <input type="hidden" name="postid" value="{{ postid }}" />
+                <input type="text" name="text" required />
+                <input type="submit" name="comment" value="comment" />
+            </form>
+        </div>
+        {% if logname == owner %}
+          <form action="/posts/?target=/users/{{ logname }}/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="operation" value="delete"/>
+            <input type="hidden" name="postid" value="{{ postid }}"/>
+            <input type="submit" name="delete" value="delete this post"/>
+          </form>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>insta485</title>
+</head>
+
+<body>
+    <!-- Insta485 Header -->
+    <div>
+        <a href="/"><img src="/static/images/insta_logo.png" alt="Home" style="width:50px;height:50px;"></a>
+        <a href="/explore/">explore</a>
+        <a href="/users/{{ logname }}/">{{ logname }}</a>
+    </div>
+    <div>
+        <img src="/uploads/{{ user_img_url }}" alt="{{ logname }}">
+        <b>{{ logname }}</b>
+    </div>
+    <div>
+        <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+        <form action="{{ url_for('acc_postreq', target=request.path) }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" />
+            <input type="text" name="fullname" value="{{ fullname }}" required />
+            <input type="text" name="email" value="{{ email }}" required />
+            <input type="submit" name="update" value="submit" />
+            <input type="hidden" name="operation" value="edit_account" />
+        </form>
+    </div>
+    <div>
+        <a href="/accounts/password/"><b>Change password</b></a>
+    </div>
+    <div>
+        <a href="/accounts/delete/"><b>Delete account</b></a>
+    </div>
+</body>
+
+</html>

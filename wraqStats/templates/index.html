@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>insta485</title>
+</head>
+<body>
+    <!-- Insta485 Header -->
+    <div>
+        <a href="/"><img src="/static/images/insta_logo.png" alt="Home" style="width:50px;height:50px;"></a>
+        <a href="/explore/">explore</a>
+        <a href="/users/{{ logname }}/">{{ logname }}</a>
+    </div>
+    {% for post in posts %}
+    <!-- Insta485 Post {{ post.postid }} -->
+    <div class="feed-post">
+        <div class="feed-header">
+            <a href="/users/{{ post.owner }}/"><img src="/uploads/{{ post.owner_img_url }}" alt="{{ post.owner }}"></a>
+            <a href="/users/{{ post.owner }}/"><h2>{{ post.owner }}</h2></a>
+            <a href="/posts/{{post.postid}}/"><p>{{ post.timestamp }}</p></a>
+        </div>
+        <div class="feed-photo">
+            <img src="/uploads/{{ post.img_url }}" alt="{{ post.owner }}">
+        </div>
+        <div class="feed-meta">
+            {% if post.likes == 1 %}
+            <p>{{ post.likes }} like</p>
+            {% else %}
+            <p>{{ post.likes }} likes</p>
+            {% endif %}
+            {% for comment in post.comments %}
+            <p>
+                <span>
+                    <a href="/users/{{ comment.owner }}/"><b>{{ comment.owner }}</b></a>
+                    {{ comment.text }}
+                </span>
+            </p>
+            {% endfor %}
+            {% if post.userHasLiked %}
+            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+            <form action="{{ url_for('post_like', target='/') }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="unlike" />
+                <input type="hidden" name="postid" value="{{ post.postid }}" />
+                <input type="submit" name="unlike" value="unlike" />
+            </form>
+            {% else %}
+            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+            <form action="{{ url_for('post_like', target='/') }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="like" />
+                <input type="hidden" name="postid" value="{{ post.postid }}" />
+                <input type="submit" name="like" value="like" />
+            </form>
+            {% endif %}
+            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+            <form action="/comments/?target=/" method="post"
+                enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="create" />
+                <input type="hidden" name="postid" value="{{ post.postid }}" />
+                <input type="text" name="text" required />
+                <input type="submit" name="comment" value="comment" />
+            </form>
+
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.feed-post {
+    /* border: 5px solid red; */
+    border: 1px solid gray;
+    margin: 50px 300px 50px 300px;
+}
+
+.feed-header {
+    border: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feed-header p {
+    margin-right: 10px
+}
+.feed-header img {
+    margin-left: 10px;
+    width:50px;
+    height:50px;
+}
+.feed-photo {
+    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.user-bar {
+    border: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0px 15px 0px;
+}
+.user-bar p {
+    margin-right: 10px
+}
+.user-bar img {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+}
